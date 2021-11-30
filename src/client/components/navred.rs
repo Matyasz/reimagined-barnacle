@@ -1,24 +1,18 @@
-use yew::{
-    Component,
-    ComponentLink,
-    ShouldRender,
-    Html,
-    html
-};
+use yew::{html, Component, ComponentLink, Html, ShouldRender};
 
 pub enum LoginMsg {
-    Login
+    Login,
 }
 
-pub struct NavBar {
+pub struct NavBarRed {
     // `ComponentLink` is like a reference to a component.
     // It can be used to send messages to the component
     link: ComponentLink<Self>,
     message: String,
-    logged_in: bool
+    logged_in: bool,
 }
 
-impl Component for NavBar {
+impl Component for NavBarRed {
     type Message = LoginMsg;
     type Properties = ();
 
@@ -26,7 +20,7 @@ impl Component for NavBar {
         Self {
             link,
             message: String::from(""),
-            logged_in: false
+            logged_in: false,
         }
     }
 
@@ -53,12 +47,11 @@ impl Component for NavBar {
         // This component has no properties so we will always return "false".
         false
     }
-    
+
     fn view(&self) -> Html {
         html! {
-            <div class="header">
+            <div class="headerred">
                 { &self.message }
-                // <p>{ &self.message }</p>
                 <button onclick=self.link.callback(|_| LoginMsg::Login)>{ "login" }</button>
             </div>
         }

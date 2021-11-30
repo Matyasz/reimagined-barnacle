@@ -1,9 +1,8 @@
+pub mod client;
 pub mod server;
-pub mod ui;
 
-use ui::components::navbar::NavBar;
+use client::app::app::AppContainer;
 
 fn main() {
-    yew::start_app::<NavBar>();
-    // yew::start_app::<NavBar>();
+    yew::start_app::<AppContainer>();
 }

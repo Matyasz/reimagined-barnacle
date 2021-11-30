@@ -6,3 +6,13 @@
 
     /* height: 40px; */
 }
+
+
+.headerred {
+    display: flex;
+    background-color: red;
+    padding: 2px;
+    justify-content: flex-end;
+
+    /* height: 40px; */
+}
