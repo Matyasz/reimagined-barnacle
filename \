@@ -1,5 +1,4 @@
 use crate::client::components::navbar::NavBar;
-use crate::client::pages::{login::LoginPage, signup::SignupPage};
 
 use crate::client::routes::AppRoute;
 
@@ -54,8 +53,8 @@ impl Component for AppContainer {
     fn view(&self) -> Html {
         match AppRoute::switch(self.route.clone()) {
             Some(AppRoute::Home) => html! { <NavBar/> },
-            Some(AppRoute::Login) => html! { <LoginPage/> },
-            Some(AppRoute::Signup) => html! { <SignupPage/> },
+            Some(AppRoute::Login) => html! { "login pls" },
+            Some(AppRoute::Signup) => html! { "sign up okay" },
             None => html! {"oh no"},
         }
     }

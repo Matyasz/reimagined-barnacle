@@ -1,18 +1,47 @@
 .header {
     display: flex;
     background-color: lightslategrey;
-    padding: 2px;
+
+    /*padding-top: 2px;
+    padding-left: 2px;
+    padding-right: 2px;
+    padding-bottom: 2px;*/
+
     justify-content: flex-end;
 
-    /* height: 40px; */
+    height: 40px;
 }
 
-
-.headerred {
+.credentials-box {
     display: flex;
-    background-color: red;
-    padding: 2px;
-    justify-content: flex-end;
 
-    /* height: 40px; */
+    padding: 10px;
+    margin-top: 50px;
+
+    background-color: rebeccapurple;
+}
+
+.credentials-input {
+    padding: 5px;
+    margin: 5px;
+}
+
+.credentials-button {
+    right: 0px;
+
+    width: 50%;
+
+    margin: 2px;
+}
+
+.button {
+    padding: 0px 6px;
+    background-color: dodgerblue;
+
+    height: 100%;
+
+    display: flex;
+    /*text-align: center;
+    justify-content: center;*/
+    align-items: center;
 }
