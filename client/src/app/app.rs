@@ -1,7 +1,7 @@
-use crate::client::components::navbar::NavBar;
-use crate::client::pages::{login::LoginPage, signup::SignupPage};
+use crate::components::navbar::NavBar;
+use crate::pages::{login::LoginPage, signup::SignupPage};
 
-use crate::client::routes::AppRoute;
+use crate::routes::AppRoute;
 
 use yew::{html, Bridge, Bridged, Component, ComponentLink, Html, ShouldRender};
 use yew_router::{

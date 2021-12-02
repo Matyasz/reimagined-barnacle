@@ -1,4 +1,4 @@
-use crate::client::components::{login_form::LoginForm, navbar::NavBar};
+use crate::components::{login_form::LoginForm, navbar::NavBar};
 
 use yew::{html, Component, ComponentLink, Html, ShouldRender};
 

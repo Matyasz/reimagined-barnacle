@@ -1,4 +1,4 @@
-use crate::client::routes::AppRoute;
+use crate::routes::AppRoute;
 use yew::{html, Component, ComponentLink, Html, ShouldRender};
 use yew_router::components::RouterAnchor;
 
