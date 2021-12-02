@@ -1,4 +1,4 @@
-use crate::client::components::navbar::NavBar;
+use crate::client::components::{navbar::NavBar, signup_form::SignupForm};
 
 use yew::{html, Component, ComponentLink, Html, ShouldRender};
 
@@ -27,25 +27,8 @@ impl Component for SignupPage {
     fn view(&self) -> Html {
         html! {
             <div>
-                <NavBar/>
-
-                <form class="credentials-box" action="" method="POST">
-                    <div>
-                        <div>
-                            //<label for="username">{ "Username:" }</label>
-                            <input class="credentials-input" type="text" name="username" placeholder="username"/>
-                        </div>
-                        <div>
-                            //<label for="password">{ "Password:" }</label>
-                            <input class="credentials-input" type="password" name="password" placeholder="password"/>
-                        </div>
-                        <div>
-                            //<label for="confirm-password">{ "Confirm Password:" }</label>
-                            <input class="credentials-input" type="confirm-password" name="confirm-password" placeholder="confirm password" />
-                        </div>
-                        <input class="credentials-button" type="submit" value="Login"/>
-                    </div>
-                </form>
+                <NavBar />
+                <SignupForm />
             </div>
         }
     }

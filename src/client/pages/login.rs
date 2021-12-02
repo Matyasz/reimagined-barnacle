@@ -1,4 +1,4 @@
-use crate::client::components::navbar::NavBar;
+use crate::client::components::{login_form::LoginForm, navbar::NavBar};
 
 use yew::{html, Component, ComponentLink, Html, ShouldRender};
 
@@ -27,11 +27,8 @@ impl Component for LoginPage {
     fn view(&self) -> Html {
         html! {
             <div>
-                <NavBar/>
-
-                <div class="credentials-box">
-                    { "Log in" }
-                </div>
+                <NavBar />
+                <LoginForm />
             </div>
         }
     }

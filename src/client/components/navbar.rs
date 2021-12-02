@@ -2,9 +2,7 @@ use crate::client::routes::AppRoute;
 use yew::{html, Component, ComponentLink, Html, ShouldRender};
 use yew_router::components::RouterAnchor;
 
-pub enum LoginMsg {
-    Login,
-}
+pub enum LoginMsg {}
 
 pub struct NavBar {
     // `ComponentLink` is like a reference to a component.
