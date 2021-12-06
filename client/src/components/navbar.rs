@@ -32,18 +32,18 @@ impl Component for NavBar {
     fn view(&self) -> Html {
         html! {
             <div class="header">
-                <div class="button">
-                    <RouterAnchor<AppRoute> route=AppRoute::Login>
+                <RouterAnchor<AppRoute> route=AppRoute::Login>
+                    <div class="header-button">
                         //<button onclick=self.link.callback(|_| LoginMsg::Login)>{ "login" }</button>
-                        { "login" }
-                    </RouterAnchor<AppRoute>>
-                </div>
-                <div class="button">
-                    <RouterAnchor<AppRoute> route=AppRoute::Signup>
+                        <h5>{ "login" }</h5>
+                    </div>
+                </RouterAnchor<AppRoute>>
+                <RouterAnchor<AppRoute> route=AppRoute::Signup>
+                    <div class="header-button">
                         //<button onclick=self.link.callback(|_| LoginMsg::Login)>{ "login" }</button>
-                        { "signup" }
-                    </RouterAnchor<AppRoute>>
-                </div>
+                        <h5>{ "signup" }</h5>
+                    </div>
+                </RouterAnchor<AppRoute>>
             </div>
         }
     }

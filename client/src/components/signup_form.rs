@@ -29,7 +29,7 @@ impl Component for SignupForm {
                     <h1>{ "Create Account" }</h1>
                 </div>
 
-                <div>
+                <div class="credentials-form">
                     <div class="credentials-input">
                         <input class="credentials-text" type="text" name="username" placeholder="username"/>
                     </div>
@@ -39,11 +39,11 @@ impl Component for SignupForm {
                     <div class="credentials-input">
                         <input class="credentials-text" type="password" name="confirm-password" placeholder="confirm password" />
                     </div>
+                </div>
 
-                    <div class="credentials-footer">
-                        <span> { "" } </span>
-                        <input class="credentials-button" type="submit" value="Submit"/>
-                    </div>
+                <div class="credentials-footer">
+                    <span> { "" } </span>
+                    <input class="credentials-button" type="submit" value="submit"/>
                 </div>
             </form>
         }

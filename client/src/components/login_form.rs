@@ -29,18 +29,17 @@ impl Component for LoginForm {
                     <h1>{ "Login" }</h1>
                 </div>
 
-                <div>
+                <div class="credentials-form">
                     <div class="credentials-input">
                         <input class="credentials-text" type="text" name="username" placeholder="username"/>
                     </div>
                     <div class="credentials-input">
                         <input class="credentials-text" type="password" name="password" placeholder="password"/>
                     </div>
-
-                    <div class="credentials-footer">
-                        <span> { "" } </span>
-                        <input class="credentials-button" type="submit" value="Submit"/>
-                    </div>
+                </div>
+                <div class="credentials-footer">
+                    <span> { "" } </span>
+                    <input class="credentials-button" type="submit" value="submit"/>
                 </div>
             </form>
         }
