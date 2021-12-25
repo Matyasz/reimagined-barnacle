@@ -1,9 +1,16 @@
-use yew::{html, Component, ComponentLink, Html, ShouldRender};
+use yew::{
+    html,
+    services::fetch::{FetchTask, Request},
+    Component, ComponentLink, Html, ShouldRender,
+};
+use yewtil::fetch::Fetch;
 
 pub enum SignupFormMsg {}
 
 pub struct SignupForm {
     link: ComponentLink<Self>,
+    api: Fetch<Request<Vec<i32>>, Vec<i32>>,
+    fetch_task: Option<FetchTask>,
 }
 
 impl Component for SignupForm {
@@ -11,7 +18,11 @@ impl Component for SignupForm {
     type Properties = ();
 
     fn create(_props: Self::Properties, link: ComponentLink<Self>) -> Self {
-        Self { link }
+        Self {
+            link,
+            api: Default::default(),
+            fetch_task: None,
+        }
     }
 
     fn update(&mut self, msg: Self::Message) -> ShouldRender {

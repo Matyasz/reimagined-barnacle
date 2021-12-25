@@ -17,3 +17,6 @@ Cargo.lock
 /dist
 /client/dist
 /server/dist
+
+# Backend data
+/server/migrations
