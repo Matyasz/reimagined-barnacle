@@ -4,6 +4,7 @@ extern crate diesel;
 pub mod errors;
 pub mod models;
 pub mod schema;
+pub mod user_actions;
 
 use actix_web::{App, HttpServer};
 use dotenv::dotenv;
@@ -11,7 +12,7 @@ use dotenv::dotenv;
 use diesel::pg::PgConnection;
 use diesel::r2d2::ConnectionManager;
 
-use models::credentials::process_signup;
+use user_actions::signup::signup;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
@@ -23,7 +24,7 @@ async fn main() -> std::io::Result<()> {
         .build(manager)
         .expect("oops pool");
 
-    HttpServer::new(move || App::new().service(process_signup).data(pool.clone()))
+    HttpServer::new(move || App::new().service(signup).data(pool.clone()))
         .bind(("127.0.0.1", 3000))?
         .run()
         .await
