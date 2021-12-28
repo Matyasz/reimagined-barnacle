@@ -1,6 +1,8 @@
 use crate::schema::users;
 
+use argonautica::Hasher;
 use diesel::{Insertable, Queryable};
+use dotenv::dotenv;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -35,11 +37,21 @@ pub struct User {
 
 impl NewUser {
     pub fn new(email: String, username: String, password: String) -> Self {
+        dotenv().ok();
+
+        let secret =
+            std::env::var("SECRET_KEY").expect("Environment variable SECRET_KEY must be set.");
+
+        let hashed_pass = Hasher::default()
+            .with_password(password)
+            .with_secret_key(secret)
+            .hash()
+            .unwrap();
+
         return NewUser {
             email: email,
             username: username,
-            password: password,
+            password: hashed_pass,
         };
     }
 }
-

@@ -16,17 +16,18 @@ async fn signup(
     creds: web::Form<NewUserCredentials>,
     pool: web::Data<Pool>,
 ) -> Result<HttpResponse, ServerError> {
-    println!("{:?}", creds);
+    if creds.password != creds.passconf {
+        return Err(ServerError::UserError("Passwords do not match".to_string()));
+    }
+
     let connection = pool.get()?;
-    // if creds.password != creds.passconf {
-    //     return "sad error";
-    // }
 
     let new_user = NewUser::new(
         creds.email.clone(),
         creds.username.clone(),
         creds.password.clone(),
     );
+    println!("{:?}", new_user);
 
     let _db_res = diesel::insert_into(users::table)
         .values(&new_user)
