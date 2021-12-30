@@ -1,4 +1,4 @@
-use crate::components::{navbar::NavBar, signup_form::SignupForm};
+use crate::components::signup_form::SignupForm;
 
 use yew::{html, Component, Context, Html};
 
@@ -14,7 +14,7 @@ impl Component for SignupPage {
         Self {}
     }
 
-    fn update(&mut self, _ctx: &Context<Self>, msg: Self::Message) -> bool {
+    fn update(&mut self, _ctx: &Context<Self>, _msg: Self::Message) -> bool {
         false
     }
 

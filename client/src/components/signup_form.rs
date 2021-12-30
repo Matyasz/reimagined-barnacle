@@ -1,30 +1,20 @@
 use yew::{html, Component, Context, Html};
 // use yew::prelude::*;
 
-pub enum SignupFormMsg {
-    Upd,
-}
+pub enum SignupFormMsg {}
 
-pub struct SignupForm {
-    txt: String,
-}
+pub struct SignupForm {}
 
 impl Component for SignupForm {
     type Message = SignupFormMsg;
     type Properties = ();
 
     fn create(_ctx: &Context<Self>) -> Self {
-        Self {
-            txt: "submit".to_string(),
-        }
+        Self {}
     }
 
-    fn update(&mut self, _ctx: &Context<Self>, msg: Self::Message) -> bool {
-        match msg {
-            SignupFormMsg::Upd => self.txt = "argh".to_string(),
-        }
-
-        true
+    fn update(&mut self, _ctx: &Context<Self>, _msg: Self::Message) -> bool {
+        false
     }
 
     fn view(&self, _ctx: &Context<Self>) -> Html {
@@ -52,7 +42,7 @@ impl Component for SignupForm {
 
                 <div class="credentials-footer">
                     <span> { "" } </span>
-                    <input class="credentials-button" type="submit" value={self.txt.clone()} />
+                    <input class="credentials-button" type="submit" value="submit" />
                 </div>
             </form>
         }

@@ -9,7 +9,7 @@ use yew_router::prelude::*;
 
 pub enum AppMsg {}
 pub struct AppContainer {
-    logged_in: bool,
+    // logged_in: bool,
 }
 
 impl Component for AppContainer {
@@ -17,10 +17,10 @@ impl Component for AppContainer {
     type Properties = ();
 
     fn create(_ctx: &Context<Self>) -> Self {
-        Self { logged_in: false }
+        Self {}
     }
 
-    fn update(&mut self, _ctx: &Context<Self>, msg: Self::Message) -> bool {
+    fn update(&mut self, _ctx: &Context<Self>, _msg: Self::Message) -> bool {
         true
     }
 
@@ -38,7 +38,7 @@ impl Component for AppContainer {
 }
 
 impl AppContainer {
-    fn view_nav(&self, link: &Scope<Self>) -> Html {
+    fn view_nav(&self, _link: &Scope<Self>) -> Html {
         html! {
             < NavBar />
         }

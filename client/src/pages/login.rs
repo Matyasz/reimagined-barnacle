@@ -1,4 +1,4 @@
-use crate::components::{login_form::LoginForm, navbar::NavBar};
+use crate::components::login_form::LoginForm;
 
 use yew::{html, Component, Context, Html};
 
@@ -14,7 +14,7 @@ impl Component for LoginPage {
         Self {}
     }
 
-    fn update(&mut self, _ctx: &Context<Self>, msg: Self::Message) -> bool {
+    fn update(&mut self, _ctx: &Context<Self>, _msg: Self::Message) -> bool {
         false
     }
 
