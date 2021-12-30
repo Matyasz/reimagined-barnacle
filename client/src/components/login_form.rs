@@ -1,37 +1,31 @@
-use yew::{html, Component, ComponentLink, Html, ShouldRender};
+use yew::{html, Component, Context, Html};
 
 pub enum LoginFormMsg {}
 
-pub struct LoginForm {
-    link: ComponentLink<Self>,
-}
+pub struct LoginForm {}
 
 impl Component for LoginForm {
     type Message = LoginFormMsg;
     type Properties = ();
 
-    fn create(_props: Self::Properties, link: ComponentLink<Self>) -> Self {
-        Self { link }
+    fn create(ctx: &Context<Self>) -> Self {
+        Self {}
     }
 
-    fn update(&mut self, msg: Self::Message) -> ShouldRender {
+    fn update(&mut self, ctx: &Context<Self>, msg: Self::Message) -> bool {
         true
     }
 
-    fn change(&mut self, _props: Self::Properties) -> ShouldRender {
-        false
-    }
-
-    fn view(&self) -> Html {
+    fn view(&self, ctx: &Context<Self>) -> Html {
         html! {
             <form class="credentials-box" action="" method="POST">
                 <div class="credentials-header">
-                    <h1>{ "Login" }</h1>
+                    <h1>{ "login" }</h1>
                 </div>
 
                 <div class="credentials-form">
                     <div class="credentials-input">
-                        <input class="credentials-text" type="text" name="username" placeholder="username"/>
+                        <input class="credentials-text" type="email" name="email" placeholder="email"/>
                     </div>
                     <div class="credentials-input">
                         <input class="credentials-text" type="password" name="password" placeholder="password"/>

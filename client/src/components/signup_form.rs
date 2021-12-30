@@ -1,49 +1,47 @@
-use yew::{
-    html,
-    services::fetch::{FetchTask, Request},
-    Component, ComponentLink, Html, ShouldRender,
-};
-use yewtil::fetch::Fetch;
+use yew::{html, Component, Context, Html};
+// use yew::prelude::*;
 
-pub enum SignupFormMsg {}
+pub enum SignupFormMsg {
+    Upd,
+}
 
 pub struct SignupForm {
-    link: ComponentLink<Self>,
-    api: Fetch<Request<Vec<i32>>, Vec<i32>>,
-    fetch_task: Option<FetchTask>,
+    txt: String,
 }
 
 impl Component for SignupForm {
     type Message = SignupFormMsg;
     type Properties = ();
 
-    fn create(_props: Self::Properties, link: ComponentLink<Self>) -> Self {
+    fn create(_ctx: &Context<Self>) -> Self {
         Self {
-            link,
-            api: Default::default(),
-            fetch_task: None,
+            txt: "submit".to_string(),
         }
     }
 
-    fn update(&mut self, msg: Self::Message) -> ShouldRender {
+    fn update(&mut self, _ctx: &Context<Self>, msg: Self::Message) -> bool {
+        match msg {
+            SignupFormMsg::Upd => self.txt = "argh".to_string(),
+        }
+
         true
     }
 
-    fn change(&mut self, _props: Self::Properties) -> ShouldRender {
-        false
-    }
-
-    fn view(&self) -> Html {
+    fn view(&self, _ctx: &Context<Self>) -> Html {
         html! {
             <form class="credentials-box" action="" method="POST">
                 <div class="credentials-header">
-                    <h1>{ "Create Account" }</h1>
+                    <h1>{ "create account" }</h1>
                 </div>
 
                 <div class="credentials-form">
                     <div class="credentials-input">
-                        <input class="credentials-text" type="text" name="username" placeholder="username"/>
+                        <input class="credentials-text" type="email" name="email" placeholder="email"/>
                     </div>
+                    <div class="credentials-input">
+                        <input class="credentials-text" type="text" name="name" placeholder="name"/>
+                    </div>
+
                     <div class="credentials-input">
                         <input class="credentials-text" type="password" name="password" placeholder="password"/>
                     </div>
@@ -54,7 +52,7 @@ impl Component for SignupForm {
 
                 <div class="credentials-footer">
                     <span> { "" } </span>
-                    <input class="credentials-button" type="submit" value="submit"/>
+                    <input class="credentials-button" type="submit" value={self.txt.clone()} />
                 </div>
             </form>
         }

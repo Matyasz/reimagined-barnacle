@@ -1,33 +1,26 @@
 use crate::components::{navbar::NavBar, signup_form::SignupForm};
 
-use yew::{html, Component, ComponentLink, Html, ShouldRender};
+use yew::{html, Component, Context, Html};
 
 pub enum SignupMsg {}
 
-pub struct SignupPage {
-    link: ComponentLink<Self>,
-}
+pub struct SignupPage {}
 
 impl Component for SignupPage {
     type Message = SignupMsg;
     type Properties = ();
 
-    fn create(_props: Self::Properties, link: ComponentLink<Self>) -> Self {
-        Self { link }
+    fn create(_ctx: &Context<Self>) -> Self {
+        Self {}
     }
 
-    fn update(&mut self, msg: Self::Message) -> ShouldRender {
-        true
-    }
-
-    fn change(&mut self, _props: Self::Properties) -> ShouldRender {
+    fn update(&mut self, _ctx: &Context<Self>, msg: Self::Message) -> bool {
         false
     }
 
-    fn view(&self) -> Html {
+    fn view(&self, _ctx: &Context<Self>) -> Html {
         html! {
             <div>
-                <NavBar />
                 <SignupForm />
             </div>
         }

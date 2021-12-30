@@ -1,13 +1,17 @@
-use yew_router::Switch;
+use yew_router::prelude::*;
 
-#[derive(Switch, Debug, Clone, Copy)]
+#[derive(Routable, PartialEq, Debug, Clone, Copy)]
 pub enum AppRoute {
-    #[to = "/login"]
+    #[at("/login")]
     Login,
 
-    #[to = "/signup"]
+    #[at("/signup")]
     Signup,
 
-    #[to = "/"]
+    #[at("/")]
     Home,
+
+    #[not_found]
+    #[at("/404")]
+    NotFound,
 }

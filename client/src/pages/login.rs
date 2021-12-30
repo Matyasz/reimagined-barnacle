@@ -1,33 +1,26 @@
 use crate::components::{login_form::LoginForm, navbar::NavBar};
 
-use yew::{html, Component, ComponentLink, Html, ShouldRender};
+use yew::{html, Component, Context, Html};
 
 pub enum LoginMsg {}
 
-pub struct LoginPage {
-    link: ComponentLink<Self>,
-}
+pub struct LoginPage {}
 
 impl Component for LoginPage {
     type Message = LoginMsg;
     type Properties = ();
 
-    fn create(_props: Self::Properties, link: ComponentLink<Self>) -> Self {
-        Self { link }
+    fn create(_ctx: &Context<Self>) -> Self {
+        Self {}
     }
 
-    fn update(&mut self, msg: Self::Message) -> ShouldRender {
-        true
-    }
-
-    fn change(&mut self, _props: Self::Properties) -> ShouldRender {
+    fn update(&mut self, _ctx: &Context<Self>, msg: Self::Message) -> bool {
         false
     }
 
-    fn view(&self) -> Html {
+    fn view(&self, _ctx: &Context<Self>) -> Html {
         html! {
             <div>
-                <NavBar />
                 <LoginForm />
             </div>
         }
