@@ -1,5 +1,9 @@
 @import url('httpss://fonts.googleapis.com/css?family=Lato');
 
+body {
+    background-color: black;
+}
+
 .header {
     font-family: "Lato", sans-serif;
 
