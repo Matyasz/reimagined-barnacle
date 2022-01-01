@@ -1,21 +1,20 @@
-use gloo::console::log;
 use reqwasm::http::Request;
-use wasm_bindgen::JsValue;
 use wasm_bindgen_futures::spawn_local;
-use web_sys::{FocusEvent, HtmlInputElement, HtmlFormElement};
+use web_sys::{FocusEvent, HtmlFormElement};
 use yew::{function_component, html, use_node_ref, Callback};
 
-pub struct Creds {
+use crate::utilities::form_utils::process_form_field;
+
+pub struct SignupCredentials {
+    pub email: String,
     pub name: String,
-    pub pass: String,
+    pub password: String,
+    pub passconf: String,
 }
 
 #[function_component(SignupForm)]
 pub fn signup_form() -> Html {
-    let email_ref = use_node_ref();
-    let name_ref = use_node_ref();
-    let pass_ref = use_node_ref();
-    let passconf_ref = use_node_ref();
+    let user_ref = use_node_ref();
 
     // wasm_bindgen_futures::spawn_local(async move {
     //     let req = Request::post("127.0.0.1:3000/signup");
@@ -27,33 +26,27 @@ pub fn signup_form() -> Html {
     // });
 
     let onsubmit = {
-        let email_ref = email_ref.clone();
-        let name_ref = name_ref.clone();
-        let pass_ref = pass_ref.clone();
-        let passconf_ref = passconf_ref.clone();
+        let user_ref = user_ref.clone();
 
         Callback::from(move |e: FocusEvent| {
             e.prevent_default();
+            let user_input = user_ref.cast::<HtmlFormElement>();
 
-            let email_input = email_ref.cast::<HtmlInputElement>();
-            let name_input = name_ref.cast::<HtmlInputElement>();
-            let pass_input = pass_ref.cast::<HtmlInputElement>();
-            let passconf_input = passconf_ref.cast::<HtmlInputElement>();
+            let x = user_input
+                .unwrap()
+                .get_elements_by_class_name("credentials-text");
 
-            let email = email_input.unwrap().value();
-            let name = name_input.unwrap().value();
-            let password = pass_input.unwrap().value();
-            let passconf = passconf_input.unwrap().value();
+            let email = process_form_field(&x, "email");
+            let name = process_form_field(&x, "name");
+            let password = process_form_field(&x, "password");
+            let passconf = process_form_field(&x, "confirm-password");
 
-            log!(JsValue::from(&email));
-            log!(JsValue::from(&name));
-            log!(JsValue::from(&password));
-            log!(JsValue::from(&passconf));
-
-            let is_invalid = email.is_empty();
-            if is_invalid {
-                return;
-            }
+            let creds = SignupCredentials {
+                email: email.clone(),
+                name: name.clone(),
+                password: password.clone(),
+                passconf: passconf.clone(),
+            };
 
             // spawn_local(async move {
             //     let resp = Request::post("/path").send().await.unwrap();
@@ -62,24 +55,24 @@ pub fn signup_form() -> Html {
     };
 
     html! {
-        <form class="credentials-box" { onsubmit }>
+        <form class="credentials-box" ref={ user_ref } { onsubmit }>
             <div class="credentials-header">
                 <h1>{ "create account" }</h1>
             </div>
 
             <div class="credentials-form">
                 <div class="credentials-input">
-                    <input ref={ email_ref } class="credentials-text" type="email" name="email" id="email" placeholder="email" />
+                    <input class="credentials-text" type="email" name="email" placeholder="email" />
                 </div>
                 <div class="credentials-input">
-                    <input ref={ name_ref } class="credentials-text" type="text" name="name" id="name" placeholder="name" />
+                    <input class="credentials-text" type="text" name="name" placeholder="name" />
                 </div>
 
                 <div class="credentials-input">
-                    <input ref={ pass_ref } class="credentials-text" type="password" name="password" placeholder="password" />
+                    <input class="credentials-text" type="password" name="password" placeholder="password" />
                 </div>
                 <div class="credentials-input">
-                    <input ref={ passconf_ref } class="credentials-text" type="password" name="confirm-password" placeholder="confirm password" />
+                    <input class="credentials-text" type="password" name="confirm-password" placeholder="confirm password" />
                 </div>
             </div>
 
@@ -90,55 +83,3 @@ pub fn signup_form() -> Html {
         </form>
     }
 }
-
-// impl Component for SignupForm {
-//     type Message = SignupFormMsg;
-//     type Properties = ();
-
-//     fn create(_ctx: &Context<Self>) -> Self {
-//         Self {}
-//     }
-
-//     fn update(&mut self, _ctx: &Context<Self>, _msg: Self::Message) -> bool {
-//         // let req = Request::post("127.0.0.1:3000/signup");
-
-//         // req.body({"username": 'u'});
-
-//         // .await
-//         // .unwrap()
-//         // .json().;
-
-//         false
-//     }
-
-//     fn view(&self, _ctx: &Context<Self>) -> Html {
-//         html! {
-//             <form class="credentials-box" action="" method="POST">
-//                 <div class="credentials-header">
-//                     <h1>{ "create account" }</h1>
-//                 </div>
-
-//                 <div class="credentials-form">
-//                     <div class="credentials-input">
-//                         <input class="credentials-text" type="email" name="email" placeholder="email"/>
-//                     </div>
-//                     <div class="credentials-input">
-//                         <input class="credentials-text" type="text" name="name" placeholder="name"/>
-//                     </div>
-
-//                     <div class="credentials-input">
-//                         <input class="credentials-text" type="password" name="password" placeholder="password"/>
-//                     </div>
-//                     <div class="credentials-input">
-//                         <input class="credentials-text" type="password" name="confirm-password" placeholder="confirm password" />
-//                     </div>
-//                 </div>
-
-//                 <div class="credentials-footer">
-//                     <span> { "" } </span>
-//                     <input class="credentials-button" type="submit" value="submit" />
-//                 </div>
-//             </form>
-//         }
-//     }
-// }

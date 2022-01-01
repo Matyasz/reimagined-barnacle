@@ -2,6 +2,7 @@ pub mod app;
 pub mod components;
 pub mod pages;
 pub mod routes;
+pub mod utilities;
 
 use app::app::AppContainer;
 // use wasm_bindgen::prelude::wasm_bindgen;
