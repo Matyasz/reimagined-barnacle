@@ -11,8 +11,9 @@ pub struct ValidatedStruct<T> {
 /* validate_form
  *
  * Takes an Option<HtmlFormElement> representing data coming from any
- * general form and validates the data inside, then packages the data
- * found along with any alerts that should be raised.
+ * general form (as long as it implements Default and the FormStyle trait)
+ * and validates the data inside, then packages the data found
+ * along with any alerts that should be raised.
  *
  */
 pub fn validate_form<T>(form: Option<HtmlFormElement>) -> ValidatedStruct<T>
