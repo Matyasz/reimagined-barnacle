@@ -1,16 +1,13 @@
-use reqwasm::http::Request;
-use wasm_bindgen_futures::spawn_local;
+use gloo::dialogs::alert;
+// use reqwasm::http::Request;
+// use wasm_bindgen_futures::spawn_local;
 use web_sys::{FocusEvent, HtmlFormElement};
 use yew::{function_component, html, use_node_ref, Callback};
 
-use crate::utilities::form_utils::process_form_field;
-
-pub struct SignupCredentials {
-    pub email: String,
-    pub name: String,
-    pub password: String,
-    pub passconf: String,
-}
+use crate::{
+    models::credentials::SignupCredentials,
+    utilities::form_utils::{validate_form, ValidatedStruct},
+};
 
 #[function_component(SignupForm)]
 pub fn signup_form() -> Html {
@@ -30,27 +27,29 @@ pub fn signup_form() -> Html {
 
         Callback::from(move |e: FocusEvent| {
             e.prevent_default();
-            let user_input = user_ref.cast::<HtmlFormElement>();
+            let form_element = user_ref.cast::<HtmlFormElement>();
+            let vcreds: ValidatedStruct<SignupCredentials> = validate_form(form_element);
 
-            let x = user_input
-                .unwrap()
-                .get_elements_by_class_name("credentials-text");
+            if !vcreds.alerts.is_empty() {
+                let mut msg = "".to_owned();
+                for alrt in vcreds.alerts {
+                    msg.push_str(&alrt);
+                    msg.push_str("\n");
+                }
 
-            let email = process_form_field(&x, "email");
-            let name = process_form_field(&x, "name");
-            let password = process_form_field(&x, "password");
-            let passconf = process_form_field(&x, "confirm-password");
-
-            let creds = SignupCredentials {
-                email: email.clone(),
-                name: name.clone(),
-                password: password.clone(),
-                passconf: passconf.clone(),
-            };
-
-            // spawn_local(async move {
-            //     let resp = Request::post("/path").send().await.unwrap();
-            // });
+                alert(&msg);
+            } else {
+                gloo::console::log!(vcreds.data.name);
+                // spawn_local(async move {
+                //     let creds = SignupCredentials {
+                //         email: email.clone(),
+                //         name: name.clone(),
+                //         password: password.clone(),
+                //         passconf: passconf.clone(),
+                //     };
+                // let resp = Request::post("127.0.0.1:3000/signup").send().await.unwrap();
+                // });
+            }
         })
     };
 
@@ -72,7 +71,7 @@ pub fn signup_form() -> Html {
                     <input class="credentials-text" type="password" name="password" placeholder="password" />
                 </div>
                 <div class="credentials-input">
-                    <input class="credentials-text" type="password" name="confirm-password" placeholder="confirm password" />
+                    <input class="credentials-text" type="password" name="passconf" placeholder="confirm password" />
                 </div>
             </div>
 
