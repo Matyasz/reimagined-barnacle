@@ -8,14 +8,20 @@ pub struct ValidatedStruct<T> {
     pub alerts: Vec<String>,
 }
 
-/* validate_form
- *
- * Takes an Option<HtmlFormElement> representing data coming from any
- * general form (as long as it implements Default and the FormStyle trait)
- * and validates the data inside, then packages the data found
- * along with any alerts that should be raised.
- *
- */
+/// Takes an Option<HtmlFormElement> representing data coming from any
+/// general form (as long as it implements Default and the FormStyle trait)
+/// and validates some basic properties of the data inside, then packages
+/// the data found along with any alerts that should be raised.
+///
+/// # Arguments
+///
+/// * `form`: Option<HtmlFormElement> - The form element to be processed.
+///
+/// # Returns
+///
+/// * ValudatedStruct<T> - The data from the form, packaged into a struct of
+///                        type T, alongside any alerts that have been raised
+///                        about the contents of the data pushed into a Vec<String>
 pub fn validate_form<T>(form: Option<HtmlFormElement>) -> ValidatedStruct<T>
 where
     T: FormStyle + Default,
