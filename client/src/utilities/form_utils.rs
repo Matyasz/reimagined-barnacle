@@ -19,7 +19,7 @@ pub struct ValidatedStruct<T> {
 ///
 /// # Returns
 ///
-/// * ValudatedStruct<T> - The data from the form, packaged into a struct of
+/// * ValidatedStruct<T> - The data from the form, packaged into a struct of
 ///                        type T, alongside any alerts that have been raised
 ///                        about the contents of the data pushed into a Vec<String>
 pub fn validate_form<T>(form: Option<HtmlFormElement>) -> ValidatedStruct<T>
@@ -34,14 +34,14 @@ where
             let user_input = f.get_elements_by_class_name("credentials-text");
 
             for fld in data.fields() {
-                let v = process_form_field(&user_input, fld.as_str());
+                let val = process_form_field(&user_input, fld.as_str());
 
-                let msg = validate_form_field(&v, &fld);
+                let msg = validate_form_field(&val, &fld);
                 match msg {
                     Some(m) => alerts.push(m),
                     None => {}
                 }
-                data.set(&fld, v);
+                data.set(&fld, val);
             }
         }
         None => {}

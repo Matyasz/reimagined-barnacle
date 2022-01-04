@@ -6,7 +6,9 @@ pub mod models;
 pub mod schema;
 pub mod user_actions;
 
-use actix_web::{App, HttpServer};
+use actix_cors::Cors;
+use actix_web::{http, App, HttpServer};
+
 use dotenv::dotenv;
 
 use diesel::pg::PgConnection;
@@ -24,8 +26,21 @@ async fn main() -> std::io::Result<()> {
         .build(manager)
         .expect("oops pool");
 
-    HttpServer::new(move || App::new().service(signup).data(pool.clone()))
-        .bind(("127.0.0.1", 3000))?
-        .run()
-        .await
+    HttpServer::new(move || {
+        let cors = Cors::default()
+            .allowed_origin("http://localhost:8080")
+            .allowed_methods(vec!["GET", "POST"])
+            .allowed_headers(vec![
+                http::header::ACCESS_CONTROL_ALLOW_ORIGIN,
+                http::header::AUTHORIZATION,
+                http::header::ACCEPT,
+            ])
+            .allowed_header(http::header::CONTENT_TYPE)
+            .max_age(36000);
+
+        App::new().wrap(cors).service(signup).data(pool.clone())
+    })
+    .bind(("127.0.0.1", 3000))?
+    .run()
+    .await
 }

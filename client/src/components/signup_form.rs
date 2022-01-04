@@ -1,6 +1,7 @@
-use gloo::dialogs::alert;
-// use reqwasm::http::Request;
-// use wasm_bindgen_futures::spawn_local;
+use gloo::{console::log, dialogs::alert};
+use reqwasm::http::Request;
+use serde_json::json;
+use wasm_bindgen_futures::spawn_local;
 use web_sys::{FocusEvent, HtmlFormElement};
 use yew::{function_component, html, use_node_ref, Callback};
 
@@ -30,31 +31,51 @@ pub fn signup_form() -> Html {
             let form_element = user_ref.cast::<HtmlFormElement>();
             let vcreds: ValidatedStruct<SignupCredentials> = validate_form(form_element);
 
+            let mut valid_data = true;
+
             if !vcreds.alerts.is_empty() {
+                valid_data = false;
+
                 let mut msg = "".to_owned();
-                for alrt in vcreds.alerts {
+                for alrt in &vcreds.alerts {
                     msg.push_str(&alrt);
                     msg.push_str("\n");
                 }
 
                 alert(&msg);
-            } else {
-                gloo::console::log!(vcreds.data.name);
-                // spawn_local(async move {
-                //     let creds = SignupCredentials {
-                //         email: email.clone(),
-                //         name: name.clone(),
-                //         password: password.clone(),
-                //         passconf: passconf.clone(),
-                //     };
-                // let resp = Request::post("127.0.0.1:3000/signup").send().await.unwrap();
-                // });
+            }
+
+            if vcreds.data.password != vcreds.data.passconf {
+                valid_data = false;
+                alert("Passwords do not match");
+            }
+
+            if valid_data {
+                gloo::console::log!(&vcreds.data.name);
+
+                let c = json!(vcreds.data.clone()).to_string();
+                log!(&c);
+                spawn_local(async move {
+                    let resp = Request::post("http://localhost:3000/signup")
+                        .body(c)
+                        .send()
+                        .await
+                        .unwrap();
+
+                    let x = resp.text().await.unwrap();
+                    // TODO THIS FINALLY GIVES A CONTENT TYPE ERROR YAY
+                    log!(x);
+
+                    // log!(resp.form_data());
+                });
+
+                // println!("{:?}", resp);
             }
         })
     };
 
     html! {
-        <form class="credentials-box" ref={ user_ref } { onsubmit }>
+        <form class="credentials-box" content_type="x-www-form-urlencoded" ref={ user_ref } { onsubmit }>
             <div class="credentials-header">
                 <h1>{ "create account" }</h1>
             </div>

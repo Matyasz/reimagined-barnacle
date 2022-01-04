@@ -12,10 +12,8 @@ use r2d2;
 type Pool = r2d2::Pool<ConnectionManager<PgConnection>>;
 
 #[post("/signup")]
-async fn signup(
-    creds: web::Form<NewUserCredentials>,
-    pool: web::Data<Pool>,
-) -> Result<HttpResponse, ServerError> {
+async fn signup(credents: String, pool: web::Data<Pool>) -> Result<HttpResponse, ServerError> {
+    let creds: NewUserCredentials = serde_json::from_str(&credents).unwrap();
     if creds.password != creds.passconf {
         return Err(ServerError::UserError("Passwords do not match".to_string()));
     }
@@ -24,7 +22,7 @@ async fn signup(
 
     let new_user = NewUser::new(
         creds.email.clone(),
-        creds.username.clone(),
+        creds.name.clone(),
         creds.password.clone(),
     );
     println!("{:?}", new_user);
@@ -33,7 +31,7 @@ async fn signup(
         .values(&new_user)
         .get_results::<User>(&connection);
 
-    Ok(HttpResponse::Ok().body(format!("user registered {}", creds.username)))
+    Ok(HttpResponse::Ok().body(format!("user registered {}", creds.name)))
 }
 
 // impl Responder for NewUserCredentials {

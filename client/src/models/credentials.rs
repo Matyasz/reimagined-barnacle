@@ -1,7 +1,9 @@
+use serde::Serialize;
+
 use crate::utilities::traits::FormStyle;
 use std::vec;
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Serialize)]
 pub struct SignupCredentials {
     pub email: String,
     pub name: String,
