@@ -7,7 +7,7 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LoginCredentials {
-    pub name: String,
+    pub email: String,
     pub password: String,
 }
 

@@ -11,6 +11,12 @@ pub struct SignupCredentials {
     pub passconf: String,
 }
 
+#[derive(Debug, Clone, Serialize)]
+pub struct LoginCredentials {
+    pub email: String,
+    pub password: String,
+}
+
 impl FormStyle for SignupCredentials {
     fn fields(&self) -> Vec<String> {
         vec![
@@ -42,6 +48,28 @@ impl FormStyle for SignupCredentials {
     }
 }
 
+impl FormStyle for LoginCredentials {
+    fn fields(&self) -> Vec<String> {
+        vec![String::from("email"), String::from("password")]
+    }
+
+    fn set(&mut self, field: &str, value: String) {
+        match field {
+            "email" => self.email = value,
+            "password" => self.password = value,
+            _ => {}
+        }
+    }
+
+    fn get(&mut self, field: &str) -> Option<String> {
+        match field {
+            "email" => Some(self.email.clone()),
+            "password" => Some(self.password.clone()),
+            _ => None,
+        }
+    }
+}
+
 impl Default for SignupCredentials {
     fn default() -> SignupCredentials {
         SignupCredentials {
@@ -49,6 +77,15 @@ impl Default for SignupCredentials {
             name: "".to_string(),
             password: "".to_string(),
             passconf: "".to_string(),
+        }
+    }
+}
+
+impl Default for LoginCredentials {
+    fn default() -> LoginCredentials {
+        LoginCredentials {
+            email: "".to_string(),
+            password: "".to_string(),
         }
     }
 }

@@ -7,6 +7,7 @@ pub mod schema;
 pub mod user_actions;
 
 use actix_cors::Cors;
+use actix_identity::{CookieIdentityPolicy, IdentityService};
 use actix_web::{http, App, HttpServer};
 
 use dotenv::dotenv;
@@ -14,6 +15,7 @@ use dotenv::dotenv;
 use diesel::pg::PgConnection;
 use diesel::r2d2::ConnectionManager;
 
+use user_actions::login::login;
 use user_actions::signup::signup;
 
 #[actix_web::main]
@@ -38,7 +40,16 @@ async fn main() -> std::io::Result<()> {
             .allowed_header(http::header::CONTENT_TYPE)
             .max_age(36000);
 
-        App::new().wrap(cors).service(signup).data(pool.clone())
+        App::new()
+            .wrap(cors)
+            .wrap(IdentityService::new(
+                CookieIdentityPolicy::new(&[0; 32])
+                    .name("auth-cookie")
+                    .secure(false),
+            ))
+            .service(signup)
+            .service(login)
+            .data(pool.clone())
     })
     .bind(("127.0.0.1", 3000))?
     .run()

@@ -14,15 +14,6 @@ use crate::{
 pub fn signup_form() -> Html {
     let user_ref = use_node_ref();
 
-    // wasm_bindgen_futures::spawn_local(async move {
-    //     let req = Request::post("127.0.0.1:3000/signup");
-    //     req.body(Creds {
-    //         username: "u".to_string(),
-    //     });
-
-    //     let res = req.send().await;
-    // });
-
     let onsubmit = {
         let user_ref = user_ref.clone();
 
@@ -63,13 +54,8 @@ pub fn signup_form() -> Html {
                         .unwrap();
 
                     let x = resp.text().await.unwrap();
-                    // TODO THIS FINALLY GIVES A CONTENT TYPE ERROR YAY
                     log!(x);
-
-                    // log!(resp.form_data());
                 });
-
-                // println!("{:?}", resp);
             }
         })
     };
