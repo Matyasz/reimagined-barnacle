@@ -1,8 +1,8 @@
 table! {
     users (id) {
         id -> Int4,
-        name -> Varchar,
         email -> Varchar,
+        name -> Varchar,
         password -> Varchar,
     }
 }

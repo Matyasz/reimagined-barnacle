@@ -4,9 +4,11 @@ use serde_json::json;
 use wasm_bindgen_futures::spawn_local;
 use web_sys::{FocusEvent, HtmlFormElement};
 use yew::{function_component, html, use_node_ref, Callback};
+use yew_router::{history::History, hooks::use_history};
 
 use crate::{
     models::credentials::LoginCredentials,
+    routes::AppRoute,
     utilities::form_utils::{validate_form, ValidatedStruct},
 };
 
@@ -16,8 +18,9 @@ pub fn login_form() -> Html {
 
     let onsubmit = {
         let form_ref = form_ref.clone();
+        let history = use_history().unwrap();
 
-        Callback::from(move |e: FocusEvent| {
+        Callback::once(move |e: FocusEvent| {
             e.prevent_default();
             let form_element = form_ref.cast::<HtmlFormElement>();
             let vcreds: ValidatedStruct<LoginCredentials> = validate_form(form_element);
@@ -50,6 +53,8 @@ pub fn login_form() -> Html {
 
                     let x = resp.text().await.unwrap();
                     log!(x);
+
+                    history.push(AppRoute::Home);
                 });
             }
         })
