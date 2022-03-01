@@ -38,10 +38,10 @@ async fn login(
         .verify()?;
 
     if valid_login {
-        let session_token = String::from(creds.email);
-        id.remember(session_token);
+        let session_token = format!("{}", user.id);
+        id.remember(session_token.to_owned());
 
-        Ok(HttpResponse::Ok().body(format!("Logged in as {}", user.name)))
+        Ok(HttpResponse::Ok().body(session_token))
     } else {
         Ok(HttpResponse::Ok().body("Incorrect Password"))
     }
