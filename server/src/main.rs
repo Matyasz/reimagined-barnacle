@@ -8,6 +8,7 @@ pub mod user_actions;
 
 use actix_cors::Cors;
 use actix_identity::{CookieIdentityPolicy, IdentityService};
+use actix_web::web::Data;
 use actix_web::{http, App, HttpServer};
 
 use dotenv::dotenv;
@@ -40,6 +41,8 @@ async fn main() -> std::io::Result<()> {
             .allowed_header(http::header::CONTENT_TYPE)
             .max_age(36000);
 
+        let app_pool = Data::new(pool.clone());
+
         App::new()
             .wrap(cors)
             .wrap(IdentityService::new(
@@ -49,7 +52,7 @@ async fn main() -> std::io::Result<()> {
             ))
             .service(signup)
             .service(login)
-            .data(pool.clone())
+            .app_data(app_pool)
     })
     .bind(("127.0.0.1", 3000))?
     .run()
