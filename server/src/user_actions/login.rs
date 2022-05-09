@@ -1,9 +1,8 @@
 #[path = "../schema.rs"]
 pub mod schema;
 
-use actix_identity::Identity;
-use actix_web::{post, web, HttpResponse};
-// use futures::future::{ready, Ready};
+use actix_session::Session;
+use actix_web::{post, web, Responder};
 
 use crate::errors::server_error::ServerError;
 use crate::models::user::{LoginCredentials, User};
@@ -19,8 +18,8 @@ type Pool = r2d2::Pool<ConnectionManager<PgConnection>>;
 async fn login(
     credentials: String,
     pool: web::Data<Pool>,
-    id: Identity,
-) -> Result<HttpResponse, ServerError> {
+    session: Session,
+) -> Result<impl Responder, ServerError> {
     use schema::users::dsl::{email, users};
 
     let creds: LoginCredentials = serde_json::from_str(&credentials).unwrap();
@@ -38,11 +37,12 @@ async fn login(
         .verify()?;
 
     if valid_login {
-        let session_token = format!("{}", user.id);
-        id.remember(session_token.to_owned());
+        let _r = session.insert("user_id", user.id);
 
-        Ok(HttpResponse::Ok().body(session_token))
+        println!("{:?}", session.entries());
+
+        Ok(format!("{}", user.id))
     } else {
-        Ok(HttpResponse::Ok().body("Incorrect Password"))
+        Ok(String::from("Incorrect Password"))
     }
 }
