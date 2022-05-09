@@ -7,9 +7,9 @@ pub mod schema;
 pub mod user_actions;
 
 use actix_cors::Cors;
-use actix_identity::{CookieIdentityPolicy, IdentityService};
+use actix_session::{storage::RedisSessionStore, SessionMiddleware};
 use actix_web::web::Data;
-use actix_web::{http, App, HttpServer};
+use actix_web::{cookie::Key, http, App, HttpServer};
 
 use dotenv::dotenv;
 
@@ -29,6 +29,10 @@ async fn main() -> std::io::Result<()> {
         .build(manager)
         .expect("oops pool");
 
+    let store = RedisSessionStore::new("redis://127.0.0.1:6379")
+        .await
+        .unwrap();
+
     HttpServer::new(move || {
         let cors = Cors::default()
             .allowed_origin("http://localhost:8080")
@@ -43,13 +47,13 @@ async fn main() -> std::io::Result<()> {
 
         let app_pool = Data::new(pool.clone());
 
+        // Repeat the key 3 times because the Redis key needs to be 64 bytes...
+        let secret = std::env::var("SECRET_KEY").expect("").repeat(3);
+        let secret_key = Key::from(secret.as_bytes());
+
         App::new()
             .wrap(cors)
-            .wrap(IdentityService::new(
-                CookieIdentityPolicy::new(&[0; 32])
-                    .name("auth-cookie")
-                    .secure(false),
-            ))
+            .wrap(SessionMiddleware::new(store.clone(), secret_key))
             .service(signup)
             .service(login)
             .app_data(app_pool)
