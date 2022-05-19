@@ -7,6 +7,8 @@ use actix_web::{post, web, Responder};
 use crate::errors::server_error::ServerError;
 use crate::models::user::{LoginCredentials, User};
 
+use uuid::Uuid;
+
 use argonautica::Verifier;
 use diesel::pg::PgConnection;
 use diesel::{prelude::*, r2d2::ConnectionManager};
@@ -37,11 +39,12 @@ async fn login(
         .verify()?;
 
     if valid_login {
-        let _r = session.insert("user_id", user.id);
+        let session_uuid = Uuid::new_v4();
+        let _r = session.insert("session_id", session_uuid);
 
         println!("{:?}", session.entries());
 
-        Ok(format!("{}", user.id))
+        Ok(format!("{}", session_uuid))
     } else {
         Ok(String::from("Incorrect Password"))
     }

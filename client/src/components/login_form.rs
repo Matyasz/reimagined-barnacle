@@ -1,5 +1,5 @@
 use gloo::{console::log, dialogs::alert};
-use gloo_storage::{SessionStorage, Storage};
+use gloo_storage::{LocalStorage, Storage};
 use reqwasm::http::Request;
 use serde_json::json;
 use wasm_bindgen_futures::spawn_local;
@@ -55,7 +55,7 @@ pub fn login_form() -> Html {
                     let session_id = resp.text().await.unwrap();
                     log!(&session_id);
 
-                    SessionStorage::set("session_id", session_id).unwrap();
+                    LocalStorage::set("session_id", session_id).unwrap();
                     history.push(AppRoute::Home);
                 });
             }
